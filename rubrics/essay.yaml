@@ -1,0 +1,92 @@
+name: essay
+description: >
+  Evaluates AI-generated essays and long-form writing for quality, clarity,
+  and authenticity. Focuses on scientific and analytical writing.
+
+dimensions:
+  - name: factual_precision
+    description: >
+      Are claims precise and appropriately hedged? Does the text distinguish
+      between established facts, strong evidence, and speculation?
+      1 = Wild claims with no hedging. Presents speculation as fact.
+      2 = Mostly accurate but over-claims in places.
+      3 = Generally precise. Occasional missing hedges.
+      4 = Careful with claims. Appropriate confidence levels throughout.
+      5 = Exemplary precision. Every claim calibrated correctly.
+    min_pass: 4
+    hard_floor: true
+
+  - name: no_ai_tells
+    description: >
+      Is the writing free from patterns that signal AI generation?
+      Common tells: starting paragraphs with "Moreover/Furthermore/Additionally,"
+      symmetric sentence structures, every paragraph exactly the same length,
+      concluding with "In conclusion" or "Overall," unnecessary hedging phrases
+      like "It's worth noting that."
+      1 = Reads like unedited ChatGPT output.
+      2 = Multiple AI tells. Experienced readers will notice.
+      3 = One or two minor tells. Most readers wouldn't notice.
+      4 = Clean. No obvious AI patterns.
+      5 = Has genuine voice and texture.
+    min_pass: 3
+    hard_floor: true
+
+  - name: argument_structure
+    description: >
+      Does the essay build a coherent argument or narrative?
+      1 = No discernible structure. Points float without connection.
+      2 = Structure exists but transitions are weak or forced.
+      3 = Clear structure. Some transitions feel mechanical.
+      4 = Well-structured with natural flow between sections.
+      5 = Elegant structure that serves the argument perfectly.
+    min_pass: 3
+    hard_floor: true
+
+  - name: depth
+    description: >
+      Does the writing go beyond surface-level treatment?
+      1 = Wikipedia-summary level. No original analysis.
+      2 = Some analysis but mostly restating known facts.
+      3 = Decent depth. At least one insight beyond the obvious.
+      4 = Genuinely insightful. Makes connections others miss.
+      5 = Expert-level depth. Would hold up to peer review.
+    min_pass: 3
+    hard_floor: false
+
+  - name: readability
+    description: >
+      Is the writing clear and accessible to its target audience?
+      1 = Dense jargon soup or oversimplified to the point of inaccuracy.
+      2 = Readable but uneven. Some sections much harder than others.
+      3 = Generally clear. Occasional dense patches.
+      4 = Clear throughout. Complex ideas explained well.
+      5 = Effortlessly readable. Makes hard topics feel approachable.
+    min_pass: 3
+    hard_floor: false
+
+kill_list:
+  - "Filler transitions — 'It's worth noting that,' 'Interestingly,' 'In fact'"
+  - "Hollow summaries — concluding paragraphs that restate without adding"
+  - "Authority appeals without citation — 'experts agree,' 'studies show'"
+  - "False balance — treating fringe positions as equal to consensus"
+
+banned_phrases:
+  - "it's worth noting"
+  - "it is worth noting"
+  - "it bears mentioning"
+  - "needless to say"
+  - "it goes without saying"
+  - "as we all know"
+  - "in today's world"
+  - "in this day and age"
+  - "since time immemorial"
+  - "the fact of the matter"
+  - "at the end of the day"
+  - "let's dive in"
+  - "without further ado"
+  - "in a nutshell"
+
+subject_banned: []
+max_em_dashes: 3
+max_subject_words: 15
+pass_rule: all_hard_floors

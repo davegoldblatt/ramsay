@@ -1,0 +1,87 @@
+name: grant
+description: >
+  Evaluates grant proposal writing for clarity, rigor, and persuasiveness.
+  The bar: would a reviewer fund this based on the writing quality alone?
+
+dimensions:
+  - name: problem_clarity
+    description: >
+      Is the problem statement clear, specific, and compelling?
+      1 = Vague or circular. Reader can't tell what problem is being solved.
+      2 = Problem stated but not motivated. Why should anyone care?
+      3 = Clear problem with some motivation. Missing specificity.
+      4 = Specific problem with strong motivation. Reader understands the gap.
+      5 = Compelling and precise. The problem itself makes the case for funding.
+    min_pass: 4
+    hard_floor: true
+
+  - name: methodological_rigor
+    description: >
+      Does the proposal describe a credible approach?
+      1 = Hand-waving. No concrete methodology described.
+      2 = Methods mentioned but vague. Could mean anything.
+      3 = Concrete methods with some gaps in how they connect to outcomes.
+      4 = Clear methodology with logical connection to stated goals.
+      5 = Rigorous and well-justified. Alternatives considered and addressed.
+    min_pass: 3
+    hard_floor: true
+
+  - name: no_ai_tells
+    description: >
+      Is the writing free from AI generation patterns?
+      Grant reviewers read hundreds of proposals. AI-generated ones stand out
+      through symmetric structure, filler transitions, and generic enthusiasm.
+      1 = Reads like AI output. Reviewer would flag it.
+      2 = Multiple AI patterns. Undermines credibility.
+      3 = Minor tells. Most reviewers wouldn't notice.
+      4 = Clean, professional writing. No AI patterns.
+      5 = Has the texture of an expert who cares about this problem.
+    min_pass: 4
+    hard_floor: true
+
+  - name: impact_specificity
+    description: >
+      Are the expected outcomes concrete and measurable?
+      1 = Vague promises. "This will advance the field."
+      2 = Directional outcomes but no specifics.
+      3 = Some concrete deliverables or metrics.
+      4 = Clear deliverables with timeline and success criteria.
+      5 = Specific, measurable outcomes with credible benchmarks.
+    min_pass: 3
+    hard_floor: false
+
+  - name: budget_justification
+    description: >
+      If budget details are included, are they well-justified?
+      1 = Numbers with no explanation.
+      2 = Some justification but gaps.
+      3 = Reasonable justification for major line items.
+      4 = Well-justified throughout. Reviewer can follow the logic.
+      5 = Exemplary. Every dollar tied to a specific activity.
+    min_pass: 3
+    hard_floor: false
+
+kill_list:
+  - "Buzzword inflation -- 'innovative,' 'novel,' 'groundbreaking' without evidence"
+  - "Circular justification -- the project is important because the problem matters because the project is important"
+  - "Scope creep -- promising everything instead of a focused contribution"
+  - "Generic impact claims -- 'will benefit society' without saying how or for whom"
+
+banned_phrases:
+  - "paradigm shift"
+  - "game-changing"
+  - "best-in-class"
+  - "world-class"
+  - "cutting-edge"
+  - "it goes without saying"
+  - "needless to say"
+  - "as we all know"
+  - "the fact of the matter"
+  - "synergy"
+  - "leverage our"
+  - "in today's world"
+
+subject_banned: []
+max_em_dashes: 3
+max_subject_words: 20
+pass_rule: all_hard_floors

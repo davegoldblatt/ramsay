@@ -1,0 +1,110 @@
+name: email
+description: >
+  Evaluates AI-generated email drafts for naturalness and social appropriateness.
+  The bar: would a normal person send this exact email in this context?
+
+dimensions:
+  - name: not_embarrassing
+    description: >
+      The core dimension. Would this feel normal in the inbox? Three failure modes:
+      (a) it reads like AI wrote it, (b) the tone is socially wrong for the
+      relationship, or (c) the subject line feels engineered or mismatched.
+      1 = Obviously generated or socially hostile.
+      2 = "AI polish" — too clean, too balanced.
+      3 = Passable to a casual reader. No major tone misreads.
+      4 = Sounds real. No AI tells. Tone matches the relationship.
+      5 = Sounds like a specific person wrote this.
+    min_pass: 4
+    hard_floor: true
+
+  - name: no_pitch_energy
+    description: >
+      Is this selling the concept of talking? Value propositions belong in
+      cold outreach, not warm follow-ups.
+      1 = Multiple value propositions or meeting justifications.
+      2 = One clear pitch sentence, or the email exists to justify itself.
+      3 = One soft spot — a sentence that sells rather than asks.
+      4 = Clean. Every sentence advances the relationship or ask.
+      5 = Nothing wasted. The relationship is implicit.
+    min_pass: 4
+    hard_floor: true
+
+  - name: natural_shape
+    description: >
+      Does the email feel like a real email, not polished prose?
+      1 = Every sentence same length and structure. Template energy.
+      2 = Minor variation but AI rhythm is obvious. Or way too long.
+      3 = Mostly natural. One rhythmic tell or one sentence too many.
+      4 = Reads naturally. Variation feels unforced. Length matches the ask.
+      5 = Reads like someone dashed it off. Lopsided in a human way.
+    min_pass: 3
+    hard_floor: true
+
+  - name: specific_enough
+    description: >
+      Is the text specific enough for this context?
+      1 = Completely generic. Could be about anything.
+      2 = Names the topic but nothing specific about the relationship.
+      3 = References the general context but no specific detail.
+      4 = References something specific about the relationship or shared context.
+      5 = So specific it could only come from someone who was there.
+    min_pass: 3
+    hard_floor: false
+
+  - name: replyability
+    description: >
+      Is there a natural response path?
+      1 = No way to reply without effort.
+      2 = Question too broad or too heavy.
+      3 = Answerable but generic.
+      4 = Easy to reply to. Natural response in 1-2 sentences.
+      5 = The recipient would want to respond.
+    min_pass: 3
+    hard_floor: false
+
+kill_list:
+  - "Analyst commentary — editorializing instead of asking"
+  - "Cold pitch in warm clothing — selling the concept of talking"
+  - "Narrated triggers — 'I saw X and it reminded me of Y'"
+  - "Unpriced compliments — admiration with no grounding"
+  - "Abstraction without grounding — abstract nouns without concrete images"
+
+banned_phrases:
+  - "I'm curious"
+  - "curious whether"
+  - "curious if"
+  - "stuck in my head"
+  - "stuck with me"
+  - "sticks with me"
+  - "immediately thought of you"
+  - "and thought of you"
+  - "genuinely "
+  - "been meaning to"
+  - "been meaning to write"
+  - "been meaning to reach out"
+  - "the honest version is"
+  - "circle back"
+  - "circled back"
+  - "close the loop"
+  - "closed the loop"
+  - "asking partly because"
+  - "how things have evolved"
+  - "how things have played out"
+  - "at your convenience"
+
+subject_banned:
+  - "reconnecting"
+  - "catching up"
+  - "checking in"
+  - "hello"
+  - "hi"
+  - "thinking of you"
+  - "following up"
+  - "touching base"
+  - "quick note"
+  - "long time"
+  - "touch base"
+
+max_em_dashes: 0
+max_subject_words: 10
+pass_rule: all_hard_floors

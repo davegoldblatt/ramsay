@@ -1,0 +1,95 @@
+name: newsletter
+description: >
+  Evaluates newsletter and digest-style writing. Optimized for curated content
+  that synthesizes multiple sources into a coherent, opinionated briefing.
+  The bar: would a subscriber look forward to receiving this?
+
+dimensions:
+  - name: editorial_voice
+    description: >
+      Does the writing have a consistent, opinionated perspective?
+      Newsletters live or die on voice. Neutral summaries are RSS feeds.
+      1 = Wikipedia-neutral. No perspective. Could be auto-generated.
+      2 = Occasional opinion but mostly summary. Hedge-heavy.
+      3 = Clear perspective on at least the main item. Some personality.
+      4 = Consistent voice throughout. Reader knows what the author thinks.
+      5 = Distinctive voice. Subscribers come for the perspective.
+    min_pass: 3
+    hard_floor: true
+
+  - name: no_ai_tells
+    description: >
+      Is the writing free from AI generation patterns?
+      Newsletter readers are often sophisticated. AI tells destroy trust fast.
+      1 = Reads like AI output. Subscriber would unsubscribe.
+      2 = Multiple AI tells. Feels like generated content.
+      3 = Minor tells. Most readers wouldn't notice.
+      4 = Clean. No AI patterns.
+      5 = Unmistakably human. Has quirks and texture.
+    min_pass: 4
+    hard_floor: true
+
+  - name: curation_quality
+    description: >
+      Is the selection and ordering of content thoughtful?
+      1 = Random collection of items. No logic to the ordering.
+      2 = Themed but the connections between items are forced.
+      3 = Coherent theme. Items relate to each other.
+      4 = Well-curated. The selection itself tells a story.
+      5 = Exceptional curation. Reader discovers connections they'd missed.
+    min_pass: 3
+    hard_floor: true
+
+  - name: density
+    description: >
+      Is the information-to-word ratio high?
+      Newsletters compete for attention. Every sentence should earn its place.
+      1 = Padded. Could cut 50% without losing content.
+      2 = Some filler. Two or three sentences that add nothing.
+      3 = Mostly tight. One or two throwaway lines.
+      4 = Dense. Every sentence carries information or opinion.
+      5 = Remarkably efficient. Packs more into fewer words than expected.
+    min_pass: 3
+    hard_floor: false
+
+  - name: scannability
+    description: >
+      Can a busy reader get the gist in 30 seconds?
+      1 = Wall of text. No entry points for scanners.
+      2 = Some structure but key points buried in paragraphs.
+      3 = Clear sections. Headlines give the gist.
+      4 = Scannable and readable. Works at both speeds.
+      5 = Perfect for skimming AND deep reading.
+    min_pass: 3
+    hard_floor: false
+
+kill_list:
+  - "Neutral summary -- restating facts without perspective or analysis"
+  - "Forced enthusiasm -- exclamation marks and superlatives doing the work of actual insight"
+  - "Link dumping -- listing URLs without context or opinion on why they matter"
+  - "Throat clearing -- 'This week was a big week for...' instead of just covering it"
+
+banned_phrases:
+  - "in today's world"
+  - "it's worth noting"
+  - "it is worth noting"
+  - "without further ado"
+  - "let's dive in"
+  - "let's get into it"
+  - "buckle up"
+  - "stay tuned"
+  - "that's a wrap"
+  - "until next time"
+  - "what a week"
+  - "food for thought"
+  - "hot take"
+
+subject_banned:
+  - "weekly roundup"
+  - "weekly digest"
+  - "this week in"
+  - "newsletter"
+
+max_em_dashes: 4
+max_subject_words: 12
+pass_rule: all_hard_floors

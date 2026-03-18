@@ -1,0 +1,94 @@
+name: blog
+description: >
+  Evaluates blog posts written from research, interviews, or technical material.
+  The bar: would a thoughtful reader share this? Does it earn the click?
+
+dimensions:
+  - name: hook_quality
+    description: >
+      Does the opening earn the reader's attention honestly?
+      1 = Generic opener ("In today's fast-paced world...") or clickbait.
+      2 = Functional but forgettable. States the topic without a reason to care.
+      3 = Decent hook. Gives the reader a reason to keep going.
+      4 = Strong hook. Specific, surprising, or poses a genuine question.
+      5 = Compelling. The reader couldn't stop if they wanted to.
+    min_pass: 3
+    hard_floor: true
+
+  - name: no_ai_tells
+    description: >
+      Is the writing free from patterns that signal AI generation?
+      Common tells: symmetric paragraph structures, "Moreover/Furthermore" transitions,
+      every section the same length, concluding with "In conclusion," unnecessary hedging
+      ("It's worth noting"), listicle energy in what should be prose.
+      1 = Reads like unedited ChatGPT output.
+      2 = Multiple AI tells. Experienced readers will notice.
+      3 = One or two minor tells. Most readers wouldn't notice.
+      4 = Clean. No obvious AI patterns.
+      5 = Has genuine voice and texture.
+    min_pass: 3
+    hard_floor: true
+
+  - name: argument_flow
+    description: >
+      Does the post build and connect ideas, or just list them?
+      1 = Disconnected sections. Could reorder paragraphs without noticing.
+      2 = Some connective tissue but mostly a list of points.
+      3 = Clear progression. Reader knows why each section follows the last.
+      4 = Well-structured narrative. Each section builds on what came before.
+      5 = Elegant flow. The structure itself is part of the argument.
+    min_pass: 3
+    hard_floor: true
+
+  - name: insight_density
+    description: >
+      Does the post say something the reader didn't already know?
+      1 = Restates common knowledge. Could be a Wikipedia summary.
+      2 = One interesting point buried in obvious material.
+      3 = At least one genuine insight or non-obvious connection.
+      4 = Multiple insights. Reader learns something real.
+      5 = Changes how the reader thinks about the topic.
+    min_pass: 3
+    hard_floor: false
+
+  - name: readability
+    description: >
+      Is it clear and engaging for the target audience?
+      1 = Dense jargon or oversimplified to the point of being useless.
+      2 = Readable but uneven. Some sections much harder than others.
+      3 = Generally clear. Occasional dense patches.
+      4 = Clear throughout. Complex ideas explained well.
+      5 = Effortlessly readable. Technical content feels approachable.
+    min_pass: 3
+    hard_floor: false
+
+kill_list:
+  - "Listicle energy -- numbered lists doing the work that prose should do"
+  - "Hollow framing -- 'In this post, we'll explore...' instead of just exploring"
+  - "Authority appeals without citation -- 'experts agree,' 'research shows'"
+  - "Forced takeaways -- a 'Key Takeaways' section that restates the post"
+  - "SEO stuffing -- repeating the same keyword phrase unnaturally"
+
+banned_phrases:
+  - "in today's world"
+  - "in today's fast-paced"
+  - "in this day and age"
+  - "it's worth noting"
+  - "it is worth noting"
+  - "let's dive in"
+  - "without further ado"
+  - "in this post, we'll"
+  - "in this article, we'll"
+  - "buckle up"
+  - "game-changing"
+  - "game changer"
+  - "paradigm shift"
+  - "at the end of the day"
+  - "the bottom line"
+  - "stay tuned"
+  - "food for thought"
+
+subject_banned: []
+max_em_dashes: 4
+max_subject_words: 15
+pass_rule: all_hard_floors

@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "ramsay"
+version = "0.2.0"
+description = "Quality-controlled text generation — define a rubric, provide sources, get text that passes your quality bar"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.9"
+authors = [
+    { name = "Dave Goldblatt" },
+]
+keywords = ["ai", "writing", "quality", "generation", "grounding", "style", "rubric"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Text Processing :: Linguistic",
+]
+dependencies = [
+    "anthropic>=0.39.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "ruff>=0.4.0",
+]
+
+[project.scripts]
+ramsay = "ramsay.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/davegoldblatt/ramsay"
+Repository = "https://github.com/davegoldblatt/ramsay"
+
+[tool.setuptools.packages.find]
+include = ["ramsay*"]
+
+[tool.setuptools.package-data]
+ramsay = ["../rubrics/*.yaml", "../prompts/*.md"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
