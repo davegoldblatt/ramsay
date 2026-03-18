@@ -1,4 +1,4 @@
-# Ramsay
+# Ramsay Filter
 
 Quality-controlled text generation. Define a rubric, provide sources, get text that passes your quality bar.
 
