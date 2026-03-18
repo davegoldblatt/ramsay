@@ -5,7 +5,7 @@ build-backend = "setuptools.backends._legacy:_Backend"
 [project]
 name = "ramsay"
 version = "0.2.0"
-description = "Quality-controlled text generation — define a rubric, provide sources, get text that passes your quality bar"
+description = "Anti-AI-slop generation framework. Metronome detector for LLM output."
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.9"
