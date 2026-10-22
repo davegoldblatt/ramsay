@@ -26,6 +26,51 @@ class PrecheckResult:
         return self.passed
 
 
+_GREETING_PARAGRAPH_RE = re.compile(
+    r"^(?:hi|hey|hello|dear|yo|morning|good morning)\b[^\n]{0,40}$", re.IGNORECASE
+)
+_SENDER_VOICE_RE = re.compile(
+    r"\b(?:we|we're|we've|we'd|our|ours|us|i|i'm|i've|i'd|my|me)\b", re.IGNORECASE
+)
+
+
+def _paragraphs(text: str) -> List[str]:
+    return [p.strip() for p in re.split(r"\n\s*\n", text.strip()) if p.strip()]
+
+
+def _sentences(paragraph: str) -> List[str]:
+    return [s for s in re.split(r"(?<=[.!?])\s+", paragraph.strip()) if s.strip()]
+
+
+def find_dossier_line(text: str) -> Optional[str]:
+    """Return the opening paragraph if it is a standalone "dossier line", else None.
+
+    A dossier line is a single sentence about the recipient (their company, their
+    town, what they make) that sits alone as the first paragraph after the greeting
+    and does nothing else. Its only job is to show the sender looked them up, and
+    because it always lands in the same slot it reads as a template beat:
+
+        Hi Sam,
+
+        Acme's Dayton plant builds hydraulic valves.
+
+        We make ...
+
+    The check is deliberately narrow, so a hit is high-confidence:
+    the paragraph is one sentence, has no question, has no sender voice
+    (we/our/I/my), and is followed by more body text.
+    """
+    paragraphs = _paragraphs(text)
+    if paragraphs and _GREETING_PARAGRAPH_RE.match(paragraphs[0]):
+        paragraphs = paragraphs[1:]
+    if len(paragraphs) < 2:
+        return None
+    opener = paragraphs[0]
+    if "?" in opener or len(_sentences(opener)) != 1 or _SENDER_VOICE_RE.search(opener):
+        return None
+    return opener
+
+
 def run_precheck(
     text: str,
     *,
@@ -35,6 +80,7 @@ def run_precheck(
     max_subject_words: int = 10,
     max_em_dashes: int = 0,
     check_been_verbing: bool = True,
+    check_dossier_line: bool = False,
 ) -> PrecheckResult:
     """Run all regex prechecks against a piece of text.
 
@@ -46,6 +92,8 @@ def run_precheck(
         max_subject_words: Maximum words allowed in subject.
         max_em_dashes: Maximum mid-sentence em dashes allowed (0 = none).
         check_been_verbing: Whether to check for "Been [verb]ing" openers.
+        check_dossier_line: Whether to fail a standalone one-sentence fact about
+            the recipient as the first body paragraph (see find_dossier_line).
 
     Returns:
         PrecheckResult with passed status and list of failure reasons.
@@ -102,6 +150,15 @@ def run_precheck(
             if been_verbing_re.match(line):
                 failures.append(f'"Been [verb]ing" opener: "{line[:60]}"')
             break
+
+    # --- 3b. Standalone dossier line ---
+    if check_dossier_line:
+        dossier = find_dossier_line(text)
+        if dossier:
+            failures.append(
+                f'Dossier line standing alone: "{dossier[:80]}". '
+                "Fold the fact into a sentence that does other work, or cut it."
+            )
 
     # --- 4. Subject line checks ---
     if subject is not None:
