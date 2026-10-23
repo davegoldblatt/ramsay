@@ -30,6 +30,7 @@ subject_banned:                    # Only relevant if you're evaluating text wit
 
 max_em_dashes: 0                   # Maximum mid-sentence em dashes allowed
 max_subject_words: 10              # Maximum words in subject/title
+check_dossier_line: false          # Fail a standalone one-sentence fact about the recipient as the opener
 pass_rule: all_hard_floors         # "all_hard_floors" or "average"
 ```
 
@@ -46,6 +47,19 @@ Each dimension is scored 1-5 by the LLM. Write clear descriptions that include w
 These are checked by regex before the LLM even sees the text. They're case-insensitive literal matches. Use these for phrases that are always wrong regardless of context (e.g., "let's dive in" in formal writing).
 
 Tip: trailing spaces matter. `"genuinely "` matches "genuinely curious" but not "genuinely" at end of sentence.
+
+### Dossier line check
+`check_dossier_line: true` adds a regex precheck for the "dossier line": a single sentence about the recipient that sits alone as the first paragraph after the greeting.
+
+```
+Hi Sam,
+
+Acme's Dayton plant builds hydraulic valves.
+
+We make ...
+```
+
+The line exists only to show the sender did research, and because it lands in the same slot in every email of a batch it reads as a template beat. The check is narrow on purpose: it fires only when that paragraph is one sentence, asks nothing, has no sender voice (we/our/I/my), and more body text follows. Folding the fact into the next sentence ("Acme's Dayton plant builds hydraulic valves, and we make ...") or cutting it both pass. The built-in `email` rubric turns it on.
 
 ### Kill list
 Unlike banned phrases (which are regex-matched), kill list items are described to the LLM as structural anti-patterns. The LLM evaluates whether the text exhibits these patterns. Use these for patterns that require judgment (e.g., "editorializing instead of asking").

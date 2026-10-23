@@ -56,6 +56,7 @@ class Rubric:
     pass_rule: str = "all_hard_floors"
     max_em_dashes: int = 0
     max_subject_words: int = 10
+    check_dossier_line: bool = False
 
     @property
     def hard_floor_dimensions(self) -> List[Dimension]:
@@ -120,6 +121,7 @@ def load_rubric(rubric: Union[str, Path, Dict[str, Any]]) -> Rubric:
         pass_rule=raw.get("pass_rule", "all_hard_floors"),
         max_em_dashes=raw.get("max_em_dashes", 0),
         max_subject_words=raw.get("max_subject_words", 10),
+        check_dossier_line=bool(raw.get("check_dossier_line", False)),
     )
 
 
@@ -191,6 +193,7 @@ def evaluate_style(
         subject_banned=rubric.subject_banned,
         max_subject_words=rubric.max_subject_words,
         max_em_dashes=rubric.max_em_dashes,
+        check_dossier_line=rubric.check_dossier_line,
     )
 
     if not precheck.passed:

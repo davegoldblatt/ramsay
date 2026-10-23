@@ -32,6 +32,11 @@ dimensions:
   - name: natural_shape
     description: >
       Does the email feel like a real email, not polished prose?
+      Rough joins are human and should not be scored down: a bare hyphen
+      standing in for a dash ("valves-we make the sensor"), a run-on that fuses two
+      thoughts, a lowercase product name in passing. This is how people write
+      when they avoid em dashes. Clean one-idea-per-sentence punctuation from
+      top to bottom is itself a polish tell.
       1 = Every sentence same length and structure. Template energy.
       2 = Minor variation but AI rhythm is obvious. Or way too long.
       3 = Mostly natural. One rhythmic tell or one sentence too many.
@@ -68,6 +73,7 @@ kill_list:
   - "Narrated triggers — 'I saw X and it reminded me of Y'"
   - "Unpriced compliments — admiration with no grounding"
   - "Abstraction without grounding — abstract nouns without concrete images"
+  - "Dossier line — a sentence whose only job is to show you looked the recipient up (their company, town, what they make), standing alone as its own paragraph. Fold the fact into a sentence that does other work, or cut it"
 
 banned_phrases:
   - "I'm curious"
@@ -107,4 +113,5 @@ subject_banned:
 
 max_em_dashes: 0
 max_subject_words: 10
+check_dossier_line: true
 pass_rule: all_hard_floors
